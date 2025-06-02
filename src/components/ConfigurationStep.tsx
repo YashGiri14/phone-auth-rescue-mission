@@ -15,31 +15,37 @@ const ConfigurationStep: React.FC<ConfigurationStepProps> = ({
   const configurations = ['1 BHK', '2 BHK', '3 BHK'];
 
   return (
-    <div className="animate-fade-in">
-      <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
-        Choose your configuration
-      </h2>
-      <p className="text-center text-gray-600 mb-12">
-        Tailor your space with your ideal configuration
-      </p>
-      
-      <div className="max-w-md mx-auto space-y-4 mb-16">
-        {configurations.map((config) => (
-          <button
-            key={config}
-            onClick={() => onConfigSelect(config)}
-            className={`w-full py-4 px-6 border-2 text-lg font-medium transition-all duration-200 ${
-              selectedConfig === config
-                ? 'border-yellow-400 bg-yellow-50 text-gray-800'
-                : 'border-gray-300 bg-white text-gray-700 hover:border-yellow-300 hover:bg-yellow-25'
-            }`}
-          >
-            {config}
-          </button>
-        ))}
+    <div className="min-h-screen bg-white relative">
+      <div className="animate-fade-in px-6 pt-8 pb-24">
+        <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
+          Choose your configuration
+        </h2>
+        <p className="text-center text-gray-600 mb-12">
+          Tailor your space with your ideal configuration
+        </p>
+        
+        <div className="max-w-md mx-auto space-y-4">
+          {configurations.map((config) => (
+            <button
+              key={config}
+              onClick={() => onConfigSelect(config)}
+              className={`w-full py-4 px-6 border-2 text-lg font-medium transition-all duration-200 ${
+                selectedConfig === config
+                  ? 'border-yellow-400 bg-yellow-50 text-gray-800'
+                  : 'border-gray-300 bg-white text-gray-700 hover:border-yellow-300 hover:bg-yellow-25'
+              }`}
+            >
+              {config}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="flex justify-end">
+      {/* Yellow border at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-yellow-400"></div>
+
+      {/* Button positioned over yellow border */}
+      <div className="absolute bottom-4 right-6">
         <button
           onClick={onNext}
           disabled={!selectedConfig}
