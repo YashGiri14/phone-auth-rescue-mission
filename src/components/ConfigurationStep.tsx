@@ -15,7 +15,7 @@ const ConfigurationStep: React.FC<ConfigurationStepProps> = ({
   const configurations = ['1 BHK', '2 BHK', '3 BHK'];
 
   return (
-    <div className="animate-fade-in relative">
+    <div className="animate-fade-in">
       <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
         Choose your configuration
       </h2>
@@ -23,7 +23,7 @@ const ConfigurationStep: React.FC<ConfigurationStepProps> = ({
         Tailor your space with your ideal configuration
       </p>
       
-      <div className="max-w-md mx-auto space-y-4 mb-32">
+      <div className="max-w-md mx-auto space-y-4 mb-16">
         {configurations.map((config) => (
           <button
             key={config}
@@ -39,7 +39,7 @@ const ConfigurationStep: React.FC<ConfigurationStepProps> = ({
         ))}
       </div>
 
-      <div className="absolute bottom-6 right-6 z-10">
+      <div className="flex justify-end">
         <button
           onClick={onNext}
           disabled={!selectedConfig}
