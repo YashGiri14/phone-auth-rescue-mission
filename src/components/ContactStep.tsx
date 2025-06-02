@@ -28,61 +28,55 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   const isFormValid = formData.name && formData.email && formData.mobile && formData.address;
 
   return (
-    <div className="min-h-screen bg-white relative">
-      <div className="animate-fade-in px-6 pt-8 pb-24">
-        <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
-          Your estimate is almost ready
-        </h2>
-        <p className="text-center text-gray-600 mb-12">
-          Tailor your space with your ideal configuration
-        </p>
-        
-        <div className="max-w-md mx-auto space-y-6 mb-8">
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email ID"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors"
-          />
-          <input
-            type="tel"
-            name="mobile"
-            placeholder="Mobile"
-            value={formData.mobile}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors"
-          />
-          <textarea
-            name="address"
-            placeholder="Address"
-            value={formData.address}
-            onChange={handleInputChange}
-            rows={3}
-            className="w-full px-4 py-3 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors resize-none"
-          />
-        </div>
-
-        <p className="text-center text-sm text-gray-600 mb-8">
-          By submitting this form, you agree to our{' '}
-          <a href="#" className="text-blue-600 underline">privacy policy</a>
-        </p>
+    <div className="animate-fade-in">
+      <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
+        Your estimate is almost ready
+      </h2>
+      <p className="text-center text-gray-600 mb-12">
+        Tailor your space with your ideal configuration
+      </p>
+      
+      <div className="max-w-md mx-auto space-y-6 mb-8">
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email ID"
+          value={formData.email}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors"
+        />
+        <input
+          type="tel"
+          name="mobile"
+          placeholder="Mobile"
+          value={formData.mobile}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors"
+        />
+        <textarea
+          name="address"
+          placeholder="Address"
+          value={formData.address}
+          onChange={handleInputChange}
+          rows={3}
+          className="w-full px-4 py-3 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors resize-none"
+        />
       </div>
 
-      {/* Yellow border at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-yellow-400"></div>
+      <p className="text-center text-sm text-gray-600 mb-8">
+        By submitting this form, you agree to our{' '}
+        <a href="#" className="text-blue-600 underline">privacy policy</a>
+      </p>
 
-      {/* Buttons positioned over yellow border */}
-      <div className="absolute bottom-4 left-6 right-6 flex justify-between">
+      <div className="flex justify-between">
         <button
           onClick={onPrevious}
           className="px-8 py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors"
