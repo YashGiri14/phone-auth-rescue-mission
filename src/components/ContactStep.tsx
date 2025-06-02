@@ -28,7 +28,7 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   const isFormValid = formData.name && formData.email && formData.mobile && formData.address;
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in relative">
       <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
         Your estimate is almost ready
       </h2>
@@ -71,12 +71,12 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
         />
       </div>
 
-      <p className="text-center text-sm text-gray-600 mb-8">
+      <p className="text-center text-sm text-gray-600 mb-20">
         By submitting this form, you agree to our{' '}
         <a href="#" className="text-blue-600 underline">privacy policy</a>
       </p>
 
-      <div className="flex justify-between">
+      <div className="absolute bottom-6 left-6 right-6 flex justify-between z-10">
         <button
           onClick={onPrevious}
           className="px-8 py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors"

@@ -21,7 +21,7 @@ const RoomsStep: React.FC<RoomsStepProps> = ({
   onPrevious
 }) => {
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in relative">
       <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
         Choose the rooms
       </h2>
@@ -29,7 +29,7 @@ const RoomsStep: React.FC<RoomsStepProps> = ({
         We'll bring your vision to life
       </p>
       
-      <div className="max-w-md mx-auto space-y-6 mb-16">
+      <div className="max-w-md mx-auto space-y-6 mb-32">
         {rooms.map((room) => (
           <div key={room.name} className="flex items-center justify-between">
             <span className="text-lg text-gray-800">{room.name}</span>
@@ -52,7 +52,7 @@ const RoomsStep: React.FC<RoomsStepProps> = ({
         ))}
       </div>
 
-      <div className="flex justify-between">
+      <div className="absolute bottom-6 left-6 right-6 flex justify-between z-10">
         <button
           onClick={onPrevious}
           className="px-8 py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors"

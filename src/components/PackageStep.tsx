@@ -43,7 +43,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
   ];
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in relative">
       <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
         Select your package
       </h2>
@@ -51,7 +51,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
         Tailor your space with your ideal configuration
       </p>
       
-      <div className="max-w-2xl mx-auto space-y-6 mb-16">
+      <div className="max-w-2xl mx-auto space-y-6 mb-32">
         {packages.map((pkg) => (
           <div
             key={pkg.name}
@@ -80,7 +80,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
         ))}
       </div>
 
-      <div className="flex justify-between">
+      <div className="absolute bottom-6 left-6 right-6 flex justify-between z-10">
         <button
           onClick={onPrevious}
           className="px-8 py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors"
