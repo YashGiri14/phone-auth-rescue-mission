@@ -205,12 +205,13 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
     </>
   ) : (
     <div className="animate-fade-in p-1 sm:p-2 md:p-4 w-full max-w-full overflow-hidden">
-      <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-center mb-2 sm:mb-3 md:mb-4 text-gray-800 px-1 sm:px-2">
-        Your estimate is almost ready
-      </h2>
-      <p className="text-center text-gray-600 mb-3 sm:mb-4 md:mb-6 lg:mb-8 px-1 sm:px-2 text-xs sm:text-sm">
-        Tailor your space with your ideal configuration
-      </p>
+      <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-center mb-1 sm:mb-2 md:mb-2 text-gray-800 px-1 sm:px-2">
+  Your estimate is almost ready
+</h2>
+<p className="text-center text-gray-600 mb-2 sm:mb-3 md:mb-4 lg:mb-5 px-1 sm:px-2 text-xs sm:text-sm">
+  Tailor your space with your ideal configuration
+</p>
+
       
       <div className="max-w-sm mx-auto space-y-2 sm:space-y-3 md:space-y-4 mb-3 sm:mb-4 md:mb-6 px-1 sm:px-2">
         <input
@@ -253,12 +254,12 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
           </div>
           {formData.mobile.length >= 10 && validatePhone(formData.mobile) && !isVerified && (
             <button
-              onClick={handleMobileSubmit}
-              disabled={loading}
-              className="px-2 sm:px-3 py-2 sm:py-2.5 bg-black text-white text-xs sm:text-sm font-medium hover:bg-gray-800 transition-colors rounded whitespace-nowrap flex-shrink-0 disabled:opacity-50"
-            >
-              {loading ? 'Sending...' : 'Verify'}
-            </button>
+  onClick={handleMobileSubmit}
+  disabled={loading}
+  className="px-2 sm:px-3 py-2 sm:py-2.5 bg-blue-600 text-white text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors rounded whitespace-nowrap flex-shrink-0 disabled:opacity-50"
+>
+  {loading ? 'Sending...' : 'Verify'}
+</button>
           )}
           {isVerified && (
             <div className="px-2 sm:px-3 py-2 sm:py-2.5 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded flex items-center whitespace-nowrap flex-shrink-0">

@@ -70,13 +70,12 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
 
   return (
     <div className="animate-fade-in p-1 sm:p-2 md:p-4 w-full max-w-full overflow-hidden">
-      <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-center mb-2 sm:mb-3 md:mb-4 text-gray-800 px-1 sm:px-2">
-        Verify your mobile number
-      </h2>
-      <p className="text-center text-gray-600 mb-4 sm:mb-6 md:mb-8 px-1 sm:px-2 text-xs sm:text-sm break-all">
-        We've sent a 6-digit code to <span className="font-medium">+91{mobile}</span>
-      </p>
-      
+      <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-center mb-1 sm:mb-2 md:mb-2 text-gray-800 px-1 sm:px-2">
+  Verify your mobile number
+</h2>
+<p className="text-center text-gray-600 mb-2 sm:mb-3 md:mb-4 px-1 sm:px-2 text-xs sm:text-sm break-all">
+  We've sent a 6-digit code to <span className="font-medium">+91{mobile}</span>
+</p>     
       <div className="max-w-sm mx-auto space-y-3 sm:space-y-4 md:space-y-6 mb-4 sm:mb-6 md:mb-8 px-1 sm:px-2">
         <div className="flex justify-center">
           <InputOTP
