@@ -1,6 +1,38 @@
 import React, { useState } from 'react';
 import OTPVerification from './OTPVerification';
 
+import { RecaptchaVerifier } from 'firebase/auth';
+import { auth } from '../firebase';
+import { signInWithPhoneNumber } from 'firebase/auth';
+
+
+declare global {
+  interface Window {
+    recaptchaVerifier: any;
+    confirmationResult: any;
+  }
+}
+
+
+
+const setupRecaptcha = (mobile: string, sendOTPCallback: () => void) => {
+  if (!window.recaptchaVerifier) {
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      auth,
+      'recaptcha-container',
+      {
+        size: 'invisible',
+        callback: sendOTPCallback,
+      }
+    );
+  }
+};
+
+
+// Removed sendOTP from here. It will be defined inside the ContactStep component.
+
+
+
 interface ContactStepProps {
   onSubmit: (formData: any) => void;
   onPrevious: () => void;
@@ -17,29 +49,55 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   const [isVerified, setIsVerified] = useState(false);
   const [sentOtp, setSentOtp] = useState('');
 
+  // Add a dummy handler for OTP back navigation (to avoid reference error)
+  const handleBackFromOTP = () => {
+    setShowOTP(false);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const sendOTP = async (mobile: string) => {
-    // Generate a 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    setSentOtp(otp);
-    
-    console.log(`Demo Mode - OTP for ${mobile}: ${otp}`);
-    
-    // Show success message
-    const successMsg = document.createElement('div');
-    successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded z-50';
-    successMsg.textContent = 'OTP sent to your mobile!';
-    document.body.appendChild(successMsg);
-    setTimeout(() => document.body.removeChild(successMsg), 3000);
-    
-    return otp;
+  // Move sendOTP here so it can access setShowOTP
+  const sendOTP = async (mobile: string): Promise<string | undefined> => {
+    setupRecaptcha(mobile, () => {});
+    const appVerifier = window.recaptchaVerifier;
+    const formattedPhone = `+91${mobile}`;
+
+    try {
+      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
+      window.confirmationResult = confirmation;
+      setShowOTP(true);
+      // Simulate OTP for testing/demo purposes
+      const generatedOtp = '123456'; // Replace with actual OTP logic if available
+      setSentOtp(generatedOtp);
+      return generatedOtp;
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      alert('Failed to send OTP. Please try again.');
+      return undefined;
+    }
   };
+//   try {
+//     const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
+//     window.confirmationResult = confirmation;
+
+//     const successMsg = document.createElement('div');
+//     successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded z-50';
+//     successMsg.textContent = 'OTP sent to your mobile!';
+//     document.body.appendChild(successMsg);
+//     setTimeout(() => document.body.removeChild(successMsg), 3000);
+
+//     setShowOTP(true);
+//   } catch (error) {
+//     console.error('SMS not sent', error);
+//     alert('Failed to send OTP. Try again later.');
+//   }
+// };
+
 
   const handleMobileSubmit = async () => {
     if (formData.mobile.length >= 10) {
@@ -61,41 +119,36 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
     }
     return false;
   };
-
-  const handleBackFromOTP = () => {
-    setShowOTP(false);
-  };
-
   const handleResendOTP = async () => {
     const otp = await sendOTP(formData.mobile);
-    setSentOtp(otp);
-    
-    // Auto-fill OTP after 2 seconds for resend too
-    setTimeout(() => {
-      window.dispatchEvent(new CustomEvent('autofillOTP', { detail: otp }));
-    }, 2000);
+    if (otp) {
+      setSentOtp(otp);
+      // Auto-fill OTP after 2 seconds for resend too
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('autofillOTP', { detail: otp }));
+      }, 2000);
+    }
   };
-
+    // Auto-fill OTP after 2 seconds for resend too
   const handleSubmit = () => {
-    if (isVerified) {
+    if (isFormValid) {
       onSubmit(formData);
     }
   };
 
   const isFormValid = formData.name && formData.email && formData.mobile && formData.address && isVerified;
 
-  if (showOTP) {
-    return (
+  return showOTP ? (
+    <>
       <OTPVerification
         mobile={formData.mobile}
         onVerified={handleOTPVerified}
         onBack={handleBackFromOTP}
         onResend={handleResendOTP}
       />
-    );
-  }
-
-  return (
+      <div id="recaptcha-container"></div>
+    </>
+  ) : (
     <div className="animate-fade-in p-1 sm:p-2 md:p-4 w-full max-w-full overflow-hidden">
       <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-center mb-2 sm:mb-3 md:mb-4 text-gray-800 px-1 sm:px-2">
         Your estimate is almost ready
