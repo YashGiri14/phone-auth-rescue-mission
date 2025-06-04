@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import ProgressIndicator from '../components/ProgressIndicator';
@@ -108,7 +107,7 @@ const Index = () => {
           <Header />
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
           
-          <div className="bg-white rounded-lg shadow-lg p-2 sm:p-4 md:p-8 lg:p-12 min-h-[500px] relative mx-1 sm:mx-2 md:mx-0">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mx-1 sm:mx-2 md:mx-0 min-h-fit">
             {currentStep === 0 && (
               <ConfigurationStep
                 selectedConfig={selectedConfig}
@@ -144,9 +143,6 @@ const Index = () => {
             )}
           </div>
         </div>
-        
-        {/* Yellow bottom section */}
-        {/* <div className="absolute bottom-0 left-0 right-0 h-20 bg-yellow-400"></div> */}
       </div>
     </div>
   );
