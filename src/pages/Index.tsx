@@ -17,8 +17,7 @@ const Index = () => {
   const [rooms, setRooms] = useState([
     { name: 'Living Room', count: 1 },
     { name: 'Bedroom', count: 1 },
-    { name: 'Kitchen', count: 1 },
-    { name: 'Dining', count: 1 }
+    { name: 'Kitchen', count: 1 }
   ]);
   const [selectedPackage, setSelectedPackage] = useState('');
   const [contactInfo, setContactInfo] = useState({});
@@ -27,6 +26,22 @@ const Index = () => {
 
   const handleConfigSelect = (config: string) => {
     setSelectedConfig(config);
+    
+    // Update rooms based on BHK selection
+    let newRooms = [
+      { name: 'Living Room', count: 1 },
+      { name: 'Kitchen', count: 1 }
+    ];
+    
+    if (config === '1 BHK') {
+      newRooms.push({ name: 'Bedroom', count: 1 });
+    } else if (config === '2 BHK') {
+      newRooms.push({ name: 'Bedroom', count: 2 });
+    } else if (config === '3 BHK') {
+      newRooms.push({ name: 'Bedroom', count: 3 });
+    }
+    
+    setRooms(newRooms);
   };
 
   const handleRoomCountChange = (roomName: string, count: number) => {
@@ -69,12 +84,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 font-inter">
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-yellow-100 relative">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-yellow-100 relative overflow-x-hidden">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <Header />
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
           
-          <div className="bg-white rounded-lg shadow-lg p-8 md:p-12 min-h-[500px] relative">
+          <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 lg:p-12 min-h-[500px] relative mx-2 md:mx-0">
             {currentStep === 0 && (
               <ConfigurationStep
                 selectedConfig={selectedConfig}
@@ -111,7 +126,7 @@ const Index = () => {
         </div>
         
         {/* Yellow bottom section */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-yellow-400"></div>
+        {/* <div className="absolute bottom-0 left-0 right-0 h-20 bg-yellow-400"></div> */}
       </div>
     </div>
   );
