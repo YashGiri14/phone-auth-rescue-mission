@@ -76,7 +76,7 @@ const RoomsStep: React.FC<RoomsStepProps> = ({
         </button>
         <button
           onClick={onNext}
-          className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors rounded text-sm sm:text-base"
+          className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-yellow-400 text-black font-medium hover:bg-yellow-500 transition-colors rounded text-sm sm:text-base"
         >
           Next
         </button>

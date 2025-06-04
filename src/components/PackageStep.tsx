@@ -50,19 +50,19 @@ const PackageStep: React.FC<PackageStepProps> = ({
           <div
             key={pkg.name}
             onClick={() => onPackageSelect(pkg.name)}
-            className={`border-2 p-4 sm:p-6 cursor-pointer transition-all duration-200 rounded-lg ${
+            className={`border-2 p-2 sm:p-4 md:p-6 cursor-pointer transition-all duration-200 rounded-lg ${
               selectedPackage === pkg.name
                 ? 'border-yellow-400 bg-yellow-50'
                 : 'border-gray-300 bg-white hover:border-yellow-300'
             }`}
           >
-            <div className="flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-4">
+            <div className="flex flex-col sm:flex-row items-start space-y-2 sm:space-y-0 sm:space-x-4">
               <img
                 src={pkg.image}
                 alt={pkg.name}
-                className="w-32 h-32 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-cover rounded mx-auto sm:mx-0 flex-shrink-0"
+                className="w-full h-48 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-cover rounded flex-shrink-0"
               />
-              <div className="flex-1 text-center sm:text-left">
+              <div className="flex-1 text-center sm:text-left px-2 sm:px-0">
                 <div className="flex flex-col sm:flex-row items-center sm:space-x-2 mb-2">
                   <h3 className="text-sm sm:text-lg md:text-xl font-semibold text-gray-800">{pkg.name}</h3>
                   <span className="text-xs sm:text-md md:text-lg text-gray-600">({pkg.price})</span>
@@ -77,7 +77,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
       <div className="flex justify-between space-x-2">
         <button
           onClick={onPrevious}
-          className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-yellow-400 text-black font-medium hover:bg-yellow-500 transition-colors rounded text-sm sm:text-base"
+          className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors rounded text-sm sm:text-base"
         >
           Previous
         </button>

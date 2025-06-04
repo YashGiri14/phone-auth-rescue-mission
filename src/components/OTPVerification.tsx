@@ -128,7 +128,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
           disabled={otp.length !== 6 || isVerifying}
           className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 font-medium transition-all duration-200 rounded text-xs sm:text-sm flex-shrink-0 ${
             otp.length === 6 && !isVerifying
-              ? 'bg-black text-white hover:bg-gray-800'
+              ? 'bg-yellow-400 text-black hover:bg-yellow-500'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
