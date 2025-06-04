@@ -8,7 +8,7 @@ const Header = () => {
         <img
           src="/lovable-uploads/0e7764bc-df65-4205-841f-740f7b35349b.png"
           alt="Artisan Studio"
-          className="h-16 sm:h-20 md:h-24 w-auto mx-auto"
+          className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto mx-auto"
         />
       </div>
     </div>

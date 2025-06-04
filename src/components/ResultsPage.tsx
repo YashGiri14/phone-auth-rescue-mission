@@ -41,15 +41,15 @@ const ResultsPage: React.FC<ResultsPageProps> = ({
       <div className="max-w-4xl mx-auto px-2 sm:px-4">
         <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
           <div className="text-center mb-4 sm:mb-6">
-            <div className="inline-block mb-3">
+            <div className="inline-block mb-2">
               <img
                 src="/lovable-uploads/0e7764bc-df65-4205-841f-740f7b35349b.png"
                 alt="Artisan Studio"
-                className="h-12 sm:h-16 md:h-20 w-auto mx-auto"
+                className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto mx-auto"
               />
             </div>
             
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-2 text-gray-800">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-1 text-gray-800">
               Your estimate is ready now
             </h2>
             <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 px-2">
@@ -112,21 +112,21 @@ const ResultsPage: React.FC<ResultsPageProps> = ({
                 <button className="w-full mt-4 sm:mt-6 bg-black text-white py-2 sm:py-3 font-medium hover:bg-gray-800 transition-colors text-sm sm:text-base">
                   Visit our website
                 </button>
+                
+                <button
+                  onClick={handleBackToStart}
+                  className="w-full mt-3 px-4 py-2 bg-black text-white font-medium hover:bg-gray-800 transition-colors rounded text-sm flex items-center justify-center gap-2"
+                >
+                  ← Back to Start
+                </button>
               </div>
             </div>
           </div>
           
           <div className="mt-6 sm:mt-8 text-center">
-            <p className="text-sm sm:text-base text-gray-600 px-2 mb-4 sm:mb-6">
+            <p className="text-sm sm:text-base text-gray-600 px-2">
               Thank you for choosing Artisan Studio, {contactInfo.name}! We'll contact you at {contactInfo.mobile} to discuss your project further.
             </p>
-            
-            <button
-              onClick={handleBackToStart}
-              className="px-4 py-2 bg-black text-white font-medium hover:bg-gray-800 transition-colors rounded text-sm flex items-center gap-2 mx-auto"
-            >
-              ← Back to Start
-            </button>
           </div>
         </div>
       </div>
