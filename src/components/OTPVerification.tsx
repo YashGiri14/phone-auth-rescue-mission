@@ -48,15 +48,15 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
   };
 
   return (
-    <div className="animate-fade-in p-2 sm:p-4 max-w-full overflow-hidden">
-      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-2 sm:mb-3 md:mb-4 text-gray-800 px-2">
+    <div className="animate-fade-in p-1 sm:p-2 md:p-4 w-full max-w-full overflow-hidden">
+      <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-center mb-2 sm:mb-3 md:mb-4 text-gray-800 px-1 sm:px-2">
         Verify your mobile number
       </h2>
-      <p className="text-center text-gray-600 mb-4 sm:mb-6 md:mb-8 px-2 text-xs sm:text-sm md:text-base">
+      <p className="text-center text-gray-600 mb-4 sm:mb-6 md:mb-8 px-1 sm:px-2 text-xs sm:text-sm break-all">
         We've sent a 6-digit code to <span className="font-medium">{mobile}</span>
       </p>
       
-      <div className="max-w-md mx-auto space-y-3 sm:space-y-4 md:space-y-6 mb-4 sm:mb-6 md:mb-8 px-2 sm:px-4">
+      <div className="max-w-sm mx-auto space-y-3 sm:space-y-4 md:space-y-6 mb-4 sm:mb-6 md:mb-8 px-1 sm:px-2">
         <div className="flex justify-center">
           <InputOTP
             maxLength={6}
@@ -67,12 +67,12 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
             }}
           >
             <InputOTPGroup className="gap-1 sm:gap-2">
-              <InputOTPSlot index={0} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-sm sm:text-base" />
-              <InputOTPSlot index={1} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-sm sm:text-base" />
-              <InputOTPSlot index={2} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-sm sm:text-base" />
-              <InputOTPSlot index={3} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-sm sm:text-base" />
-              <InputOTPSlot index={4} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-sm sm:text-base" />
-              <InputOTPSlot index={5} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-sm sm:text-base" />
+              <InputOTPSlot index={0} className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-xs sm:text-sm" />
+              <InputOTPSlot index={1} className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-xs sm:text-sm" />
+              <InputOTPSlot index={2} className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-xs sm:text-sm" />
+              <InputOTPSlot index={3} className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-xs sm:text-sm" />
+              <InputOTPSlot index={4} className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-xs sm:text-sm" />
+              <InputOTPSlot index={5} className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-xs sm:text-sm" />
             </InputOTPGroup>
           </InputOTP>
         </div>
@@ -94,17 +94,17 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-between px-2 sm:px-4 space-x-2">
+      <div className="flex justify-between px-1 sm:px-2 gap-2">
         <button
           onClick={onBack}
-          className="px-3 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors rounded text-xs sm:text-sm md:text-base"
+          className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 bg-black text-white font-medium hover:bg-gray-800 transition-colors rounded text-xs sm:text-sm flex-shrink-0"
         >
           Back
         </button>
         <button
           onClick={handleVerify}
           disabled={otp.length !== 6 || isVerifying}
-          className={`px-3 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 font-medium transition-all duration-200 rounded text-xs sm:text-sm md:text-base ${
+          className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 font-medium transition-all duration-200 rounded text-xs sm:text-sm flex-shrink-0 ${
             otp.length === 6 && !isVerifying
               ? 'bg-black text-white hover:bg-gray-800'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
