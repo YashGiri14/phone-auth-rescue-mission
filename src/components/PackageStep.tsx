@@ -30,7 +30,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
     },
     {
       name: 'Luxury Lux',
-      price: '₹₹₹₹',
+      price: '₹₹',
       description: 'A collection of luxury home interior solutions crafted to fulfill all your needs.',
       image: '/lovable-uploads/cec37b96-b2fa-466c-bce0-12e56097efb2.png'
     }
@@ -38,7 +38,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
 
   return (
     <div className="animate-fade-in">
-      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-3 sm:mb-4 text-gray-800">
+      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-2 sm:mb-3 text-gray-800">
         Select your package
       </h2>
       <p className="text-center text-gray-600 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
@@ -60,7 +60,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
               <img
                 src={pkg.image}
                 alt={pkg.name}
-                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-cover rounded mx-auto sm:mx-0 flex-shrink-0"
+                className="w-24 h-24 sm:w-20 sm:h-20 md:w-24 md:h-24 object-cover rounded mx-auto sm:mx-0 flex-shrink-0"
               />
               <div className="flex-1 text-center sm:text-left">
                 <div className="flex flex-col sm:flex-row items-center sm:space-x-2 mb-2">
@@ -77,7 +77,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
       <div className="flex justify-between space-x-2">
         <button
           onClick={onPrevious}
-          className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors rounded text-sm sm:text-base"
+          className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-yellow-400 text-black font-medium hover:bg-yellow-500 transition-colors rounded text-sm sm:text-base"
         >
           Previous
         </button>
@@ -86,7 +86,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
           disabled={!selectedPackage}
           className={`px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 font-medium transition-all duration-200 rounded text-sm sm:text-base ${
             selectedPackage
-              ? 'bg-black text-white hover:bg-gray-800'
+              ? 'bg-yellow-400 text-black hover:bg-yellow-500'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
