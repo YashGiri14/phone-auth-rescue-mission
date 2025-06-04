@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import OTPVerification from './OTPVerification';
 
@@ -39,17 +38,6 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
     document.body.appendChild(successMsg);
     setTimeout(() => document.body.removeChild(successMsg), 3000);
     
-    // Auto-fill OTP for demo (after 2 seconds)
-    setTimeout(() => {
-      const otpInputs = document.querySelectorAll('[data-input-otp-slot]');
-      otp.split('').forEach((digit, index) => {
-        if (otpInputs[index]) {
-          (otpInputs[index] as HTMLInputElement).value = digit;
-          otpInputs[index].dispatchEvent(new Event('input', { bubbles: true }));
-        }
-      });
-    }, 2000);
-    
     return otp;
   };
 
@@ -57,6 +45,11 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
     if (formData.mobile.length >= 10) {
       const otp = await sendOTP(formData.mobile);
       setShowOTP(true);
+      
+      // Auto-fill OTP after 2 seconds using a ref callback
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('autofillOTP', { detail: otp }));
+      }, 2000);
     }
   };
 
@@ -76,6 +69,11 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   const handleResendOTP = async () => {
     const otp = await sendOTP(formData.mobile);
     setSentOtp(otp);
+    
+    // Auto-fill OTP after 2 seconds for resend too
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('autofillOTP', { detail: otp }));
+    }, 2000);
   };
 
   const handleSubmit = () => {

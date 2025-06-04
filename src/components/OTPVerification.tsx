@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from './ui/input-otp';
 
 interface OTPVerificationProps {
@@ -18,6 +18,21 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
   const [otp, setOtp] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const handleAutoFill = (event: CustomEvent) => {
+      const otpCode = event.detail;
+      console.log('Auto-filling OTP:', otpCode);
+      setOtp(otpCode);
+      setError('');
+    };
+
+    window.addEventListener('autofillOTP', handleAutoFill as EventListener);
+
+    return () => {
+      window.removeEventListener('autofillOTP', handleAutoFill as EventListener);
+    };
+  }, []);
 
   const handleVerify = async () => {
     if (otp.length === 6) {
