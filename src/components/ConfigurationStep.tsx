@@ -45,7 +45,7 @@ const ConfigurationStep: React.FC<ConfigurationStepProps> = ({
           disabled={!selectedConfig}
           className={`px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 font-medium transition-all duration-200 rounded text-sm sm:text-base ${
             selectedConfig
-              ? 'bg-black text-white hover:bg-gray-800'
+              ? 'bg-yellow-400 text-black hover:bg-yellow-500'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

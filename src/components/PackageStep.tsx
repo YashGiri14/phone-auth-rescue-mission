@@ -60,7 +60,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
               <img
                 src={pkg.image}
                 alt={pkg.name}
-                className="w-24 h-24 sm:w-20 sm:h-20 md:w-24 md:h-24 object-cover rounded mx-auto sm:mx-0 flex-shrink-0"
+                className="w-32 h-32 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-cover rounded mx-auto sm:mx-0 flex-shrink-0"
               />
               <div className="flex-1 text-center sm:text-left">
                 <div className="flex flex-col sm:flex-row items-center sm:space-x-2 mb-2">
