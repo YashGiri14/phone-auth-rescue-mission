@@ -18,6 +18,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
   const [otp, setOtp] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState('');
+  const [isResending, setIsResending] = useState(false);
 
   const handleVerify = async () => {
     if (otp.length === 6) {
@@ -26,33 +27,45 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
       
       try {
         const isValid = await onVerified(otp);
-        setIsVerifying(false);
         
         if (!isValid) {
           setError('Invalid OTP. Please try again.');
           setOtp('');
         }
       } catch (error) {
-        setIsVerifying(false);
         setError('Error verifying OTP. Please try again.');
         setOtp('');
+        console.error('OTP verification error:', error);
+      } finally {
+        setIsVerifying(false);
       }
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
+    setIsResending(true);
     setOtp('');
     setError('');
-    onResend();
-    const successMsg = document.createElement('div');
-    successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded z-50';
-    successMsg.textContent = 'OTP sent successfully!';
-    document.body.appendChild(successMsg);
-    setTimeout(() => {
-      if (document.body.contains(successMsg)) {
-        document.body.removeChild(successMsg);
-      }
-    }, 3000);
+    
+    try {
+      await onResend();
+      
+      // Show success message
+      const successMsg = document.createElement('div');
+      successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded z-50';
+      successMsg.textContent = 'OTP sent successfully!';
+      document.body.appendChild(successMsg);
+      setTimeout(() => {
+        if (document.body.contains(successMsg)) {
+          document.body.removeChild(successMsg);
+        }
+      }, 3000);
+    } catch (error) {
+      setError('Failed to resend OTP. Please try again.');
+      console.error('Resend OTP error:', error);
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -61,7 +74,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
         Verify your mobile number
       </h2>
       <p className="text-center text-gray-600 mb-4 sm:mb-6 md:mb-8 px-1 sm:px-2 text-xs sm:text-sm break-all">
-        We've sent a 6-digit code to <span className="font-medium">{mobile}</span>
+        We've sent a 6-digit code to <span className="font-medium">+91{mobile}</span>
       </p>
       
       <div className="max-w-sm mx-auto space-y-3 sm:space-y-4 md:space-y-6 mb-4 sm:mb-6 md:mb-8 px-1 sm:px-2">
@@ -95,9 +108,10 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
           </p>
           <button
             onClick={handleResend}
-            className="text-blue-600 text-xs sm:text-sm underline hover:text-blue-800"
+            disabled={isResending}
+            className="text-blue-600 text-xs sm:text-sm underline hover:text-blue-800 disabled:opacity-50"
           >
-            Resend OTP
+            {isResending ? 'Sending...' : 'Resend OTP'}
           </button>
         </div>
       </div>
