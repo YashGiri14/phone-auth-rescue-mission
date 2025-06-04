@@ -17,7 +17,8 @@ const Index = () => {
   const [rooms, setRooms] = useState([
     { name: 'Living Room', count: 1 },
     { name: 'Bedroom', count: 1 },
-    { name: 'Kitchen', count: 1 }
+    { name: 'Kitchen', count: 1 },
+    { name: 'Dining', count: 1 }
   ]);
   const [selectedPackage, setSelectedPackage] = useState('');
   const [contactInfo, setContactInfo] = useState({});
@@ -27,10 +28,11 @@ const Index = () => {
   const handleConfigSelect = (config: string) => {
     setSelectedConfig(config);
     
-    // Update rooms based on BHK selection
+    // Update rooms based on BHK selection with proper validation rules
     let newRooms = [
       { name: 'Living Room', count: 1 },
-      { name: 'Kitchen', count: 1 }
+      { name: 'Kitchen', count: 1 },
+      { name: 'Dining', count: 1 }
     ];
     
     if (config === '1 BHK') {
@@ -44,9 +46,26 @@ const Index = () => {
     setRooms(newRooms);
   };
 
+  const getRoomLimits = (roomName: string) => {
+    if (!selectedConfig) return { min: 0, max: 3 };
+    
+    if (roomName === 'Bedroom') {
+      if (selectedConfig === '1 BHK') return { min: 0, max: 1 };
+      if (selectedConfig === '2 BHK') return { min: 0, max: 2 };
+      if (selectedConfig === '3 BHK') return { min: 0, max: 3 };
+    }
+    
+    // For Living Room, Kitchen, and Dining
+    if (selectedConfig === '1 BHK') return { min: 0, max: 1 };
+    return { min: 0, max: 1 }; // For 2BHK and 3BHK, these rooms have min 0, max 1
+  };
+
   const handleRoomCountChange = (roomName: string, count: number) => {
+    const limits = getRoomLimits(roomName);
+    const validCount = Math.max(limits.min, Math.min(limits.max, count));
+    
     setRooms(rooms.map(room => 
-      room.name === roomName ? { ...room, count } : room
+      room.name === roomName ? { ...room, count: validCount } : room
     ));
   };
 
@@ -85,11 +104,11 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50 font-inter">
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-yellow-100 relative overflow-x-hidden">
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
           <Header />
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
           
-          <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 lg:p-12 min-h-[500px] relative mx-2 md:mx-0">
+          <div className="bg-white rounded-lg shadow-lg p-2 sm:p-4 md:p-8 lg:p-12 min-h-[500px] relative mx-1 sm:mx-2 md:mx-0">
             {currentStep === 0 && (
               <ConfigurationStep
                 selectedConfig={selectedConfig}
@@ -104,6 +123,7 @@ const Index = () => {
                 onRoomCountChange={handleRoomCountChange}
                 onNext={nextStep}
                 onPrevious={previousStep}
+                getRoomLimits={getRoomLimits}
               />
             )}
             

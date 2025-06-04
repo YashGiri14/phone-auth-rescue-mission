@@ -15,20 +15,20 @@ const ConfigurationStep: React.FC<ConfigurationStepProps> = ({
   const configurations = ['1 BHK', '2 BHK', '3 BHK'];
 
   return (
-    <div className="animate-fade-in">
-      <h2 className="text-2xl md:text-3xl font-semibold text-center mb-4 text-gray-800">
+    <div className="animate-fade-in p-2 sm:p-4">
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-center mb-3 sm:mb-4 text-gray-800 px-2">
         Choose your configuration
       </h2>
-      <p className="text-center text-gray-600 mb-8 md:mb-12 px-4">
+      <p className="text-center text-gray-600 mb-6 sm:mb-8 md:mb-12 px-2 text-sm sm:text-base">
         Tailor your space with your ideal configuration
       </p>
       
-      <div className="max-w-md mx-auto space-y-4 mb-8 md:mb-16 px-4">
+      <div className="max-w-md mx-auto space-y-3 sm:space-y-4 mb-6 sm:mb-8 md:mb-16 px-2 sm:px-4">
         {configurations.map((config) => (
           <button
             key={config}
             onClick={() => onConfigSelect(config)}
-            className={`w-full py-4 px-6 border-2 text-lg font-medium transition-all duration-200 rounded ${
+            className={`w-full py-3 sm:py-4 px-4 sm:px-6 border-2 text-sm sm:text-lg font-medium transition-all duration-200 rounded ${
               selectedConfig === config
                 ? 'border-yellow-400 bg-yellow-50 text-gray-800'
                 : 'border-gray-300 bg-white text-gray-700 hover:border-yellow-300 hover:bg-yellow-25'
@@ -39,11 +39,11 @@ const ConfigurationStep: React.FC<ConfigurationStepProps> = ({
         ))}
       </div>
 
-      <div className="flex justify-end px-4">
+      <div className="flex justify-end px-2 sm:px-4">
         <button
           onClick={onNext}
           disabled={!selectedConfig}
-          className={`px-6 md:px-8 py-3 font-medium transition-all duration-200 rounded ${
+          className={`px-4 sm:px-6 md:px-8 py-2 sm:py-3 font-medium transition-all duration-200 rounded text-sm sm:text-base ${
             selectedConfig
               ? 'bg-black text-white hover:bg-gray-800'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
