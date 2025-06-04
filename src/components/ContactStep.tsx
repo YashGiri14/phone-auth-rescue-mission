@@ -26,6 +26,20 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   const [showOTP, setShowOTP] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    email: '',
+    mobile: ''
+  });
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^[6-9]\d{9}$/; // Indian mobile number format
+    return phoneRegex.test(phone);
+  };
 
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
@@ -44,6 +58,9 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   const sendOTP = async (mobile: string) => {
     try {
       setLoading(true);
+      
+      // COMMENTED OUT FOR DEMO - UNCOMMENT WHEN BILLING IS ENABLED
+      /*
       setupRecaptcha();
       
       const appVerifier = window.recaptchaVerifier;
@@ -55,18 +72,22 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
       window.confirmationResult = confirmation;
       
       console.log('OTP sent successfully');
+      */
+      
+      // FOR DEMO: Just show OTP screen without sending actual OTP
+      console.log('Demo mode: Showing OTP screen without sending SMS');
       setShowOTP(true);
       
-      // Show success message
+      // Show demo message
       const successMsg = document.createElement('div');
-      successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded z-50';
-      successMsg.textContent = 'OTP sent to your mobile!';
+      successMsg.className = 'fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded z-50';
+      successMsg.textContent = 'Demo mode: Use 123456 as OTP';
       document.body.appendChild(successMsg);
       setTimeout(() => {
         if (document.body.contains(successMsg)) {
           document.body.removeChild(successMsg);
         }
-      }, 3000);
+      }, 5000);
       
     } catch (error) {
       console.error('Error sending OTP:', error);
@@ -88,13 +109,28 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // Clear errors when user starts typing
+    if (name === 'email' && errors.email) {
+      setErrors({ ...errors, email: '' });
+    }
+    if (name === 'mobile' && errors.mobile) {
+      setErrors({ ...errors, mobile: '' });
+    }
   };
 
   const handleMobileSubmit = async () => {
+    // Validate phone number
+    if (!validatePhone(formData.mobile)) {
+      setErrors({ ...errors, mobile: 'Please enter a valid 10-digit mobile number starting with 6-9' });
+      return;
+    }
+    
     if (formData.mobile.length >= 10) {
       await sendOTP(formData.mobile);
     }
@@ -102,6 +138,8 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
 
   const handleOTPVerified = async (enteredOtp: string) => {
     try {
+      // COMMENTED OUT FOR DEMO - UNCOMMENT WHEN BILLING IS ENABLED
+      /*
       if (window.confirmationResult) {
         const result = await window.confirmationResult.confirm(enteredOtp);
         console.log('Phone number verified successfully:', result.user);
@@ -109,6 +147,7 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
         setShowOTP(false);
         return true;
       } else {
+      */
         // For demo purposes when Firebase billing is not enabled
         if (enteredOtp === '123456') {
           console.log('Demo OTP verified');
@@ -117,7 +156,9 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
           return true;
         }
         return false;
+      /*
       }
+      */
     } catch (error) {
       console.error('Error verifying OTP:', error);
       return false;
@@ -133,12 +174,24 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   };
 
   const handleSubmit = () => {
+    // Validate email
+    if (!validateEmail(formData.email)) {
+      setErrors({ ...errors, email: 'Please enter a valid email address' });
+      return;
+    }
+
     if (isFormValid) {
       onSubmit(formData);
     }
   };
 
-  const isFormValid = formData.name && formData.email && formData.mobile && formData.address && isVerified;
+  const isFormValid = formData.name && 
+                     formData.email && 
+                     validateEmail(formData.email) &&
+                     formData.mobile && 
+                     validatePhone(formData.mobile) &&
+                     formData.address && 
+                     isVerified;
 
   return showOTP ? (
     <>
@@ -168,24 +221,37 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
           onChange={handleInputChange}
           className="w-full px-2 sm:px-3 py-2 sm:py-2.5 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors rounded text-xs sm:text-sm"
         />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email ID"
-          value={formData.email}
-          onChange={handleInputChange}
-          className="w-full px-2 sm:px-3 py-2 sm:py-2.5 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors rounded text-xs sm:text-sm"
-        />
-        <div className="flex gap-1 sm:gap-2">
+        
+        <div>
           <input
-            type="tel"
-            name="mobile"
-            placeholder="Mobile"
-            value={formData.mobile}
+            type="email"
+            name="email"
+            placeholder="Email ID"
+            value={formData.email}
             onChange={handleInputChange}
-            className="flex-1 min-w-0 px-2 sm:px-3 py-2 sm:py-2.5 border border-gray-300 focus:border-yellow-400 focus:outline-none transition-colors rounded text-xs sm:text-sm"
+            className={`w-full px-2 sm:px-3 py-2 sm:py-2.5 border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-yellow-400 focus:outline-none transition-colors rounded text-xs sm:text-sm`}
           />
-          {formData.mobile.length >= 10 && !isVerified && (
+          {errors.email && (
+            <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+          )}
+        </div>
+        
+        <div className="flex gap-1 sm:gap-2">
+          <div className="flex-1 min-w-0">
+            <input
+              type="tel"
+              name="mobile"
+              placeholder="Mobile (10 digits)"
+              value={formData.mobile}
+              onChange={handleInputChange}
+              maxLength={10}
+              className={`w-full px-2 sm:px-3 py-2 sm:py-2.5 border ${errors.mobile ? 'border-red-500' : 'border-gray-300'} focus:border-yellow-400 focus:outline-none transition-colors rounded text-xs sm:text-sm`}
+            />
+            {errors.mobile && (
+              <p className="text-red-500 text-xs mt-1">{errors.mobile}</p>
+            )}
+          </div>
+          {formData.mobile.length >= 10 && validatePhone(formData.mobile) && !isVerified && (
             <button
               onClick={handleMobileSubmit}
               disabled={loading}
@@ -200,6 +266,7 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
             </div>
           )}
         </div>
+        
         <textarea
           name="address"
           placeholder="Address"

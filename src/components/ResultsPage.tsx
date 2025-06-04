@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ResultsPageProps {
@@ -32,10 +31,24 @@ const ResultsPage: React.FC<ResultsPageProps> = ({
     }
   };
 
+  const handleBackToStart = () => {
+    window.location.reload(); // This will refresh the page and go back to the first step
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
       <div className="max-w-4xl mx-auto px-2 sm:px-4">
         <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
+          {/* Back button */}
+          <div className="mb-4">
+            <button
+              onClick={handleBackToStart}
+              className="px-4 py-2 bg-black text-white font-medium hover:bg-gray-800 transition-colors rounded text-sm flex items-center gap-2"
+            >
+              ← Back to Start
+            </button>
+          </div>
+
           <div className="text-center mb-6 sm:mb-8">
             <div className="inline-block border-2 border-gray-400 px-4 sm:px-6 md:px-8 py-3 sm:py-4 mb-4 sm:mb-6">
               <h1 className="font-playfair text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-gray-800">
