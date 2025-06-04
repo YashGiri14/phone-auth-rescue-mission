@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Minus, Plus } from 'lucide-react';
 
@@ -24,7 +23,7 @@ const RoomsStep: React.FC<RoomsStepProps> = ({
 }) => {
   return (
     <div className="animate-fade-in">
-      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-3 sm:mb-4 text-gray-800">
+      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-2 text-gray-800">
         Choose the rooms
       </h2>
       <p className="text-center text-gray-600 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">

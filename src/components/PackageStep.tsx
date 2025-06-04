@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface Package {
@@ -38,7 +37,7 @@ const PackageStep: React.FC<PackageStepProps> = ({
 
   return (
     <div className="animate-fade-in">
-      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-2 sm:mb-3 text-gray-800">
+      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-2 text-gray-800">
         Select your package
       </h2>
       <p className="text-center text-gray-600 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
