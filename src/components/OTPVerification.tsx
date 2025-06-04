@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from './ui/input-otp';
 
 interface OTPVerificationProps {
   mobile: string;
-  onVerified: (otp: string) => boolean;
+  onVerified: (otp: string) => Promise<boolean>;
   onBack: () => void;
   onResend: () => void;
 }
@@ -19,35 +19,24 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const handleAutoFill = (event: CustomEvent) => {
-      const otpCode = event.detail;
-      console.log('Auto-filling OTP:', otpCode);
-      setOtp(otpCode);
-      setError('');
-    };
-
-    window.addEventListener('autofillOTP', handleAutoFill as EventListener);
-
-    return () => {
-      window.removeEventListener('autofillOTP', handleAutoFill as EventListener);
-    };
-  }, []);
-
   const handleVerify = async () => {
     if (otp.length === 6) {
       setIsVerifying(true);
       setError('');
       
-      setTimeout(() => {
-        const isValid = onVerified(otp);
+      try {
+        const isValid = await onVerified(otp);
         setIsVerifying(false);
         
         if (!isValid) {
           setError('Invalid OTP. Please try again.');
           setOtp('');
         }
-      }, 1000);
+      } catch (error) {
+        setIsVerifying(false);
+        setError('Error verifying OTP. Please try again.');
+        setOtp('');
+      }
     }
   };
 
@@ -59,7 +48,11 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
     successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded z-50';
     successMsg.textContent = 'OTP sent successfully!';
     document.body.appendChild(successMsg);
-    setTimeout(() => document.body.removeChild(successMsg), 3000);
+    setTimeout(() => {
+      if (document.body.contains(successMsg)) {
+        document.body.removeChild(successMsg);
+      }
+    }, 3000);
   };
 
   return (

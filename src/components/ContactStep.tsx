@@ -1,10 +1,8 @@
+
 import React, { useState } from 'react';
 import OTPVerification from './OTPVerification';
-
-import { RecaptchaVerifier } from 'firebase/auth';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { auth } from '../firebase';
-import { signInWithPhoneNumber } from 'firebase/auth';
-
 
 declare global {
   interface Window {
@@ -12,26 +10,6 @@ declare global {
     confirmationResult: any;
   }
 }
-
-
-
-const setupRecaptcha = (mobile: string, sendOTPCallback: () => void) => {
-  if (!window.recaptchaVerifier) {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      auth,
-      'recaptcha-container',
-      {
-        size: 'invisible',
-        callback: sendOTPCallback,
-      }
-    );
-  }
-};
-
-
-// Removed sendOTP from here. It will be defined inside the ContactStep component.
-
-
 
 interface ContactStepProps {
   onSubmit: (formData: any) => void;
@@ -47,11 +25,55 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
   });
   const [showOTP, setShowOTP] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const [sentOtp, setSentOtp] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Add a dummy handler for OTP back navigation (to avoid reference error)
-  const handleBackFromOTP = () => {
-    setShowOTP(false);
+  const setupRecaptcha = () => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+        callback: (response: any) => {
+          console.log('Recaptcha verified');
+        },
+        'expired-callback': () => {
+          console.log('Recaptcha expired');
+        }
+      });
+    }
+  };
+
+  const sendOTP = async (mobile: string) => {
+    try {
+      setLoading(true);
+      setupRecaptcha();
+      
+      const appVerifier = window.recaptchaVerifier;
+      const formattedPhone = `+91${mobile}`;
+      
+      console.log('Sending OTP to:', formattedPhone);
+      
+      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
+      window.confirmationResult = confirmation;
+      
+      console.log('OTP sent successfully');
+      setShowOTP(true);
+      
+      // Show success message
+      const successMsg = document.createElement('div');
+      successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded z-50';
+      successMsg.textContent = 'OTP sent to your mobile!';
+      document.body.appendChild(successMsg);
+      setTimeout(() => {
+        if (document.body.contains(successMsg)) {
+          document.body.removeChild(successMsg);
+        }
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      alert(`Failed to send OTP: ${error}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -61,75 +83,36 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
     });
   };
 
-  // Move sendOTP here so it can access setShowOTP
-  const sendOTP = async (mobile: string): Promise<string | undefined> => {
-    setupRecaptcha(mobile, () => {});
-    const appVerifier = window.recaptchaVerifier;
-    const formattedPhone = `+91${mobile}`;
-
-    try {
-      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
-      window.confirmationResult = confirmation;
-      setShowOTP(true);
-      // Simulate OTP for testing/demo purposes
-      const generatedOtp = '123456'; // Replace with actual OTP logic if available
-      setSentOtp(generatedOtp);
-      return generatedOtp;
-    } catch (error) {
-      console.error('Error sending OTP:', error);
-      alert('Failed to send OTP. Please try again.');
-      return undefined;
-    }
-  };
-//   try {
-//     const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
-//     window.confirmationResult = confirmation;
-
-//     const successMsg = document.createElement('div');
-//     successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded z-50';
-//     successMsg.textContent = 'OTP sent to your mobile!';
-//     document.body.appendChild(successMsg);
-//     setTimeout(() => document.body.removeChild(successMsg), 3000);
-
-//     setShowOTP(true);
-//   } catch (error) {
-//     console.error('SMS not sent', error);
-//     alert('Failed to send OTP. Try again later.');
-//   }
-// };
-
-
   const handleMobileSubmit = async () => {
     if (formData.mobile.length >= 10) {
-      const otp = await sendOTP(formData.mobile);
-      setShowOTP(true);
-      
-      // Auto-fill OTP after 2 seconds using a ref callback
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('autofillOTP', { detail: otp }));
-      }, 2000);
+      await sendOTP(formData.mobile);
     }
   };
 
-  const handleOTPVerified = (enteredOtp: string) => {
-    if (enteredOtp === sentOtp) {
-      setIsVerified(true);
-      setShowOTP(false);
-      return true;
+  const handleOTPVerified = async (enteredOtp: string) => {
+    try {
+      if (window.confirmationResult) {
+        const result = await window.confirmationResult.confirm(enteredOtp);
+        console.log('Phone number verified successfully:', result.user);
+        setIsVerified(true);
+        setShowOTP(false);
+        return true;
+      }
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      return false;
     }
     return false;
   };
+
   const handleResendOTP = async () => {
-    const otp = await sendOTP(formData.mobile);
-    if (otp) {
-      setSentOtp(otp);
-      // Auto-fill OTP after 2 seconds for resend too
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('autofillOTP', { detail: otp }));
-      }, 2000);
-    }
+    await sendOTP(formData.mobile);
   };
-    // Auto-fill OTP after 2 seconds for resend too
+
+  const handleBackFromOTP = () => {
+    setShowOTP(false);
+  };
+
   const handleSubmit = () => {
     if (isFormValid) {
       onSubmit(formData);
@@ -186,9 +169,10 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
           {formData.mobile.length >= 10 && !isVerified && (
             <button
               onClick={handleMobileSubmit}
-              className="px-2 sm:px-3 py-2 sm:py-2.5 bg-blue-600 text-white text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors rounded whitespace-nowrap flex-shrink-0"
+              disabled={loading}
+              className="px-2 sm:px-3 py-2 sm:py-2.5 bg-blue-600 text-white text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors rounded whitespace-nowrap flex-shrink-0 disabled:opacity-50"
             >
-              Verify
+              {loading ? 'Sending...' : 'Verify'}
             </button>
           )}
           {isVerified && (
@@ -231,6 +215,8 @@ const ContactStep: React.FC<ContactStepProps> = ({ onSubmit, onPrevious }) => {
           Get Your Estimate
         </button>
       </div>
+      
+      <div id="recaptcha-container"></div>
     </div>
   );
 };
