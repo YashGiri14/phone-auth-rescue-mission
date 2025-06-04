@@ -17,7 +17,7 @@
 // const app = initializeApp(firebaseConfig);
 
 
-// src/firebase.ts
+
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
