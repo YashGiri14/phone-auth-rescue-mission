@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import ProgressIndicator from '../components/ProgressIndicator';
@@ -102,12 +103,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 font-inter">
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-yellow-100 relative overflow-x-hidden">
-        <div className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-yellow-100 relative overflow-x-hidden flex items-center justify-center py-4 sm:py-8">
+        <div className="max-w-4xl mx-auto px-2 sm:px-4 w-full">
           <Header />
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
           
-          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mx-1 sm:mx-2 md:mx-0 min-h-fit">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mx-1 sm:mx-2 md:mx-0">
             {currentStep === 0 && (
               <ConfigurationStep
                 selectedConfig={selectedConfig}
