@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface Package {
@@ -35,16 +36,23 @@ const PackageStep: React.FC<PackageStepProps> = ({
     }
   ];
 
+  // Auto-select first package if none selected
+  React.useEffect(() => {
+    if (!selectedPackage && packages.length > 0) {
+      onPackageSelect(packages[0].name);
+    }
+  }, [selectedPackage, onPackageSelect]);
+
   return (
     <div className="animate-fade-in">
       <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center mb-2 text-gray-800">
         Select your package
       </h2>
-      <p className="text-center text-gray-600 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
+      <p className="text-center text-gray-600 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base">
         Tailor your space with your ideal configuration
       </p>
       
-      <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6 mb-8 sm:mb-12">
+      <div className="max-w-2xl mx-auto space-y-4 mb-6 sm:mb-8">
         {packages.map((pkg) => (
           <div
             key={pkg.name}
@@ -62,9 +70,10 @@ const PackageStep: React.FC<PackageStepProps> = ({
                 className="w-full h-48 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-cover rounded flex-shrink-0"
               />
               <div className="flex-1 text-center sm:text-left px-2 sm:px-0">
-                <div className="flex flex-col sm:flex-row items-center sm:space-x-2 mb-2">
-                  <h3 className="text-sm sm:text-lg md:text-xl font-semibold text-gray-800">{pkg.name}</h3>
-                  <span className="text-xs sm:text-md md:text-lg text-gray-600">({pkg.price})</span>
+                <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-2 mb-2">
+                  <h3 className="text-sm sm:text-lg md:text-xl font-semibold text-gray-800">
+                    {pkg.name} ({pkg.price})
+                  </h3>
                 </div>
                 <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed">{pkg.description}</p>
               </div>

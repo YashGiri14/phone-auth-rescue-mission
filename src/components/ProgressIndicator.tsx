@@ -8,7 +8,7 @@ interface ProgressIndicatorProps {
 
 const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ currentStep, totalSteps }) => {
   return (
-    <div className="flex justify-center mb-8 space-x-3">
+    <div className="flex justify-center mb-4 sm:mb-6 space-x-3">
       {Array.from({ length: totalSteps }, (_, index) => (
         <div
           key={index}
