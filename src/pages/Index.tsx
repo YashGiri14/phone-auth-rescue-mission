@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import ProgressIndicator from '../components/ProgressIndicator';
@@ -7,6 +6,7 @@ import RoomsStep from '../components/RoomsStep';
 import PackageStep from '../components/PackageStep';
 import ContactStep from '../components/ContactStep';
 import ResultsPage from '../components/ResultsPage';
+import { sendCustomerDataToCompany } from '../utils/emailService';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -73,8 +73,32 @@ const Index = () => {
     setSelectedPackage(packageName);
   };
 
-  const handleContactSubmit = (formData: any) => {
+  const handleContactSubmit = async (formData: any) => {
     setContactInfo(formData);
+    
+    // Calculate estimate for email
+    const totalRooms = rooms.reduce((sum, room) => sum + room.count, 0);
+    const basePrice = 48000;
+    const estimate = (basePrice * totalRooms * (selectedPackage === 'Luxury Lux' ? 2.5 : 1)).toFixed(0);
+    
+    // Prepare customer data for email
+    const customerData = {
+      configuration: selectedConfig,
+      rooms: rooms,
+      packageType: selectedPackage,
+      contactInfo: formData,
+      estimate: estimate
+    };
+    
+    // Send customer data to company email silently
+    try {
+      await sendCustomerDataToCompany(customerData);
+      console.log('Customer data sent to company email');
+    } catch (error) {
+      console.error('Failed to send customer data to company:', error);
+      // Don't show error to user, just log it
+    }
+    
     setShowResults(true);
   };
 
