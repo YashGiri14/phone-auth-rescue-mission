@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import ProgressIndicator from '../components/ProgressIndicator';
@@ -127,56 +126,46 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-neutral-50 to-stone-100 font-inter">
-      <div className="min-h-screen relative overflow-hidden flex items-center justify-center py-8">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 opacity-[0.02]">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundSize: '60px 60px'
-          }} />
-        </div>
-        
-        <div className="max-w-5xl mx-auto px-4 w-full relative z-10">
+    <div className="min-h-screen bg-gray-50 font-inter">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-yellow-100 relative overflow-x-hidden flex items-center justify-center py-4 sm:py-8">
+        <div className="max-w-4xl mx-auto px-2 sm:px-4 w-full">
           <Header />
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
           
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-8 mx-0 transition-all duration-500 hover:shadow-3xl">
-            <div className="max-w-2xl mx-auto">
-              {currentStep === 0 && (
-                <ConfigurationStep
-                  selectedConfig={selectedConfig}
-                  onConfigSelect={handleConfigSelect}
-                  onNext={nextStep}
-                />
-              )}
-              
-              {currentStep === 1 && (
-                <RoomsStep
-                  rooms={rooms}
-                  onRoomCountChange={handleRoomCountChange}
-                  onNext={nextStep}
-                  onPrevious={previousStep}
-                  getRoomLimits={getRoomLimits}
-                />
-              )}
-              
-              {currentStep === 2 && (
-                <PackageStep
-                  selectedPackage={selectedPackage}
-                  onPackageSelect={handlePackageSelect}
-                  onNext={nextStep}
-                  onPrevious={previousStep}
-                />
-              )}
-              
-              {currentStep === 3 && (
-                <ContactStep
-                  onSubmit={handleContactSubmit}
-                  onPrevious={previousStep}
-                />
-              )}
-            </div>
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mx-1 sm:mx-2 md:mx-0">
+            {currentStep === 0 && (
+              <ConfigurationStep
+                selectedConfig={selectedConfig}
+                onConfigSelect={handleConfigSelect}
+                onNext={nextStep}
+              />
+            )}
+            
+            {currentStep === 1 && (
+              <RoomsStep
+                rooms={rooms}
+                onRoomCountChange={handleRoomCountChange}
+                onNext={nextStep}
+                onPrevious={previousStep}
+                getRoomLimits={getRoomLimits}
+              />
+            )}
+            
+            {currentStep === 2 && (
+              <PackageStep
+                selectedPackage={selectedPackage}
+                onPackageSelect={handlePackageSelect}
+                onNext={nextStep}
+                onPrevious={previousStep}
+              />
+            )}
+            
+            {currentStep === 3 && (
+              <ContactStep
+                onSubmit={handleContactSubmit}
+                onPrevious={previousStep}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -72,23 +73,6 @@ export default {
 				},
 				green: {
 					600: '#059669'
-				},
-				amber: {
-					50: '#fffbeb',
-					100: '#fef3c7',
-					200: '#fde68a',
-					300: '#fcd34d',
-					400: '#fbbf24',
-					500: '#f59e0b',
-					600: '#d97706',
-					700: '#b45309',
-					800: '#92400e',
-					900: '#78350f'
-				},
-				orange: {
-					400: '#fb923c',
-					500: '#f97316',
-					600: '#ea580c'
 				}
 			},
 			borderRadius: {
@@ -133,12 +117,6 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
 				'slide-in-right': 'slide-in-right 0.3s ease-out'
-			},
-			boxShadow: {
-				'3xl': '0 35px 60px -12px rgba(0, 0, 0, 0.25)',
-			},
-			backdropBlur: {
-				xs: '2px',
 			}
 		}
 	},
